@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "651044079461",
+    "project_id": "dongnechat",
+    "storage_bucket": "dongnechat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651044079461:android:662e90f86a3ab38749c38c",
+        "android_client_info": {
+          "package_name": "com.example.dongne_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCANAWxR7unndPmeZVCZKSJmxvvgc2NeIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
