@@ -1,3 +1,4 @@
+import 'package:dongne_chat/theme.dart';
 import 'package:dongne_chat/ui/pages/home/home_page.dart';
 import 'package:dongne_chat/ui/pages/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,10 +18,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: theme,
       home: HomePage(),
     );
   }
