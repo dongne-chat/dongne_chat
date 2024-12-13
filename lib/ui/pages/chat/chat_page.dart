@@ -1,3 +1,4 @@
+import 'package:dongne_chat/ui/pages/chat/widgets/chat_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
@@ -5,26 +6,40 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title:
-            Align(alignment: Alignment.centerLeft, child: Text('헬린이들 모여라~!')),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        color: Colors.white,
-        child: Column(
-          children: [
-            senderMassageContainer(),
-            senderMassageContainer(),
-            senderMassageContainer(),
-            createdMassageContainer(),
-            createdMassageContainer(),
-            senderMassageContainer(),
-            senderMassageContainer(),
-            senderMassageContainer(),
-          ],
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: Align(
+                alignment: Alignment.centerLeft, child: Text('헬린이들 모여라~!')),
+          ),
+          bottomSheet: ChatBottomSheet(),
+          body: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                  child: ListView.builder(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      reverse: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return senderMassageContainer();
+                      }),
+                ),
+              ),
+              SizedBox(
+                height: 60,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -68,9 +83,8 @@ class ChatPage extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: SizedBox(
-                width: 65,
-                height: 65,
+              child: SizedBox.square(
+                dimension: 70,
                 child: Image.network(
                   'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_1280.jpg',
                   fit: BoxFit.fill,
