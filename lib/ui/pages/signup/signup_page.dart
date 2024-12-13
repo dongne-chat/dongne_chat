@@ -57,31 +57,39 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('회원가입')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _idController,
-              decoration: const InputDecoration(labelText: '아이디 입력'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: '비밀번호 입력'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF466995), // 버튼 색상 변경
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 화면을 탭하면 키보드 숨기기
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('회원가입')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _idController,
+                decoration: const InputDecoration(labelText: '아이디 입력'),
               ),
-              onPressed: _signup,
-              child: const Text('회원가입'),
-            ),
-          ],
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(labelText: '비밀번호 입력'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF466995), // 버튼 배경색
+                ),
+                onPressed: _signup,
+                child: const Text(
+                  '회원가입',
+                  style: TextStyle(color: Colors.white), // 글자 색상 하얀색
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
