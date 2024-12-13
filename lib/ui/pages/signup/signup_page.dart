@@ -1,6 +1,7 @@
-// pages/signup_page.dart
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../pages/mypage/mypage.dart';
+import '/data/model/user.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -12,9 +13,9 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Map<String, String> userData = {}; // 앱 메모리에 사용자 데이터 저장
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void _signup() {
+  void _signup() async {
     final id = _idController.text;
     final password = _passwordController.text;
 
@@ -25,20 +26,31 @@ class _SignupPageState extends State<SignupPage> {
       return;
     }
 
-    if (userData.containsKey(id)) {
+    try {
+      final userDoc = await _firestore.collection('users').doc(id).get();
+
+      if (userDoc.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
+        );
+      } else {
+        final newUser = User(id: id, password: password);
+        await _firestore.collection('users').doc(id).set(newUser.toMap());
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('회원가입이 완료되었습니다.')),
+        );
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyPage(userId: id, userData: newUser.toMap()),
+          ),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
-      );
-    } else {
-      userData[id] = password;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('회원가입이 완료되었습니다.')),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MyPage(userId: id, userData: userData),
-        ),
+        SnackBar(content: Text('회원가입 중 오류가 발생했습니다: $e')),
       );
     }
   }
@@ -75,3 +87,4 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
+
