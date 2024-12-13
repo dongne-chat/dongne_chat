@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyPage extends StatefulWidget {
   final String userId;
-  final Map<String, String> userData;
 
-  const MyPage({super.key, required this.userId, required this.userData});
+  const MyPage({super.key, required this.userId});
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -13,9 +13,10 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   final TextEditingController _newIdController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void _updateId() {
-    final newId = _newIdController.text;
+  void _updateId() async {
+    final newId = _newIdController.text.trim();
 
     if (newId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -24,23 +25,42 @@ class _MyPageState extends State<MyPage> {
       return;
     }
 
-    if (widget.userData.containsKey(newId)) {
+    try {
+      final newUserDoc = await _firestore.collection('users').doc(newId).get();
+
+      if (newUserDoc.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
+        );
+      } else {
+        final userDoc = await _firestore.collection('users').doc(widget.userId).get();
+        if (userDoc.exists) {
+          final userData = userDoc.data();
+          userData!['id'] = newId; // id 필드 업데이트
+          await _firestore.collection('users').doc(newId).set(userData);
+          await _firestore.collection('users').doc(widget.userId).delete();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('아이디가 성공적으로 변경되었습니다.')),
+          );
+          setState(() {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyPage(userId: newId),
+              ),
+            );
+          });
+        }
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
-      );
-    } else {
-      setState(() {
-        widget.userData.remove(widget.userId);
-        widget.userData[newId] = widget.userData[widget.userId]!;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('아이디가 변경되었습니다.')),
+        SnackBar(content: Text('아이디 변경 중 오류가 발생했습니다: $e')),
       );
     }
   }
 
-  void _updatePassword() {
-    final newPassword = _newPasswordController.text;
+  void _updatePassword() async {
+    final newPassword = _newPasswordController.text.trim();
 
     if (newPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,50 +69,65 @@ class _MyPageState extends State<MyPage> {
       return;
     }
 
-    setState(() {
-      widget.userData[widget.userId] = newPassword;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('비밀번호가 변경되었습니다.')),
-    );
+    try {
+      await _firestore.collection('users').doc(widget.userId).update({
+        'password': newPassword,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('비밀번호가 성공적으로 변경되었습니다.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('비밀번호 변경 중 오류가 발생했습니다: $e')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('마이페이지')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('아이디: ${widget.userId}'),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _newIdController,
-              decoration: const InputDecoration(labelText: '새로운 아이디 입력'),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF466995), // 버튼 색상 변경
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 화면을 탭하면 키보드 숨기기
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('마이페이지')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _newIdController,
+                decoration: const InputDecoration(labelText: '새로운 아이디 입력'),
               ),
-              onPressed: _updateId,
-              child: const Text('아이디 변경'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _newPasswordController,
-              decoration: const InputDecoration(labelText: '새로운 비밀번호 입력'),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF466995), // 버튼 색상 변경
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF466995),
+                ),
+                onPressed: _updateId,
+                child: const Text(
+                  '아이디 변경',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onPressed: _updatePassword,
-              child: const Text('비밀번호 변경'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              TextField(
+                controller: _newPasswordController,
+                decoration: const InputDecoration(labelText: '새로운 비밀번호 입력'),
+                obscureText: true,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF466995),
+                ),
+                onPressed: _updatePassword,
+                child: const Text(
+                  '비밀번호 변경',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
