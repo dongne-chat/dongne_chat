@@ -1,5 +1,6 @@
 import 'package:dongne_chat/theme.dart';
 import 'package:dongne_chat/ui/pages/home/home_page.dart';
+import 'package:dongne_chat/ui/pages/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
