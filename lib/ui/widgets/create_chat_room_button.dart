@@ -1,3 +1,4 @@
+import 'package:dongne_chat/ui/pages/create_chat/create_chat_page.dart';
 import 'package:flutter/material.dart';
 
 class CreateChatRoomButton extends StatelessWidget {
@@ -9,7 +10,8 @@ class CreateChatRoomButton extends StatelessWidget {
     // TODO: 기능 구현 필요
     return FloatingActionButton(
       onPressed: () {
-        print('onPress');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CreateChatPage()));
       },
       shape: CircleBorder(),
       backgroundColor: Theme.of(context).highlightColor,
