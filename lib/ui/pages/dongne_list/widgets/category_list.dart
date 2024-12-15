@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dongne_chat/data/model/chat_room.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoryList extends StatefulWidget {
-  List<String> categories = [
+  final List<String> categories = [
     '전체',
     '독서',
     '운동',
@@ -15,8 +18,10 @@ class CategoryList extends StatefulWidget {
     '사교/인맥',
   ];
 
+  final Function(String) onCategorySelected;
+
   /// 카테고리 리스트
-  CategoryList({super.key});
+  CategoryList({super.key, required this.onCategorySelected});
 
   @override
   State<CategoryList> createState() => _CategoryListState();
@@ -29,6 +34,8 @@ class _CategoryListState extends State<CategoryList> {
     setState(() {
       selectedIndex = value;
     });
+    // 선택된 카테고리 전달
+    widget.onCategorySelected(widget.categories[value]);
   }
 
   @override
