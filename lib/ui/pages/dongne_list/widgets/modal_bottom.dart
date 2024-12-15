@@ -1,13 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dongne_chat/ui/pages/chat/chat_page.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:flutter/material.dart';
 
 /// 채팅방 바텀 모달
-Future<dynamic> showModalBottom(BuildContext context) {
+Future<dynamic> showModalBottom(BuildContext context, String roomId,
+    String title, String info, String category) {
+  final _firestore = FirebaseFirestore.instance;
+
+// TODO // 로그인한 유저의 값넣기
+  void insertUserIdIntoChatPage() {
+    _firestore.collection('chatRooms').doc(roomId).update({
+      'users': FieldValue.arrayUnion([2]) // 로그인한 유저의 값넣기
+    });
+  }
+
   return showModalBottomSheet(
       context: context,
       builder: (context) {
         return Container(
-          height: 200,
+          height: 300,
           width: double.infinity,
           padding: EdgeInsets.only(
             top: 20,
@@ -22,32 +34,38 @@ Future<dynamic> showModalBottom(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '채팅방 이름',
+                    title,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        // TODO: 채팅방 입장 기능 구현 필요
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) =>));
-                      },
-                      child: Text(
-                        '입장',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                    onPressed: () {
+                      Navigator.pop(context); // 채팅방으로 이동 시 버튼 내리기
+                      insertUserIdIntoChatPage();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatPage(roomId: roomId, title: title)));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).highlightColor,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).highlightColor,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )),
+                    ),
+                    child: Text(
+                      '입장',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 16),
               Text(
-                '카테고리',
+                category,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -57,12 +75,9 @@ Future<dynamic> showModalBottom(BuildContext context) {
               // CategoryList(),
               SizedBox(height: 8),
               Text(
-                '채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 '
-                '설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 '
-                '설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명 채팅방 설명',
-                maxLines: 2,
+                info,
+                maxLines: null,
                 style: TextStyle(fontSize: 16),
-                overflow: TextOverflow.clip,
               ),
             ],
           ),
