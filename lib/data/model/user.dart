@@ -2,10 +2,7 @@ class User {
   final String id;
   final dynamic password;
 
-  User({
-    required this.id,
-    required this.password,
-  });
+  User({required this.id, required this.password});
 
   Map<String, String> toMap() {
     return {

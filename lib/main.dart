@@ -1,9 +1,10 @@
 import 'package:dongne_chat/theme.dart';
+import 'package:dongne_chat/ui/pages/home/home_page.dart';
 import 'package:dongne_chat/ui/pages/login/login_page.dart';
+import 'package:dongne_chat/ui/pages/signup/signup_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -12,7 +13,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: const LoginPage(),
+      home: const SignupPage(),
     );
   }
 }
