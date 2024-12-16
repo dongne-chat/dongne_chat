@@ -11,7 +11,7 @@ Future<dynamic> showModalBottom(BuildContext context, String roomId,
 // TODO // 로그인한 유저의 값넣기
   void insertUserIdIntoChatPage() {
     _firestore.collection('chatRooms').doc(roomId).update({
-      'users': FieldValue.arrayUnion([2]) // 로그인한 유저의 값넣기
+      'users': FieldValue.arrayUnion(['2']) // 로그인한 유저의 값넣기
     });
   }
 
