@@ -1,5 +1,8 @@
-import 'package:dongne_chat/ui/pages/home/home_page.dart';
+import 'package:dongne_chat/ui/pages/homepage/home_page.dart';
 import 'package:dongne_chat/ui/pages/login/login_view_model.dart';
+import 'package:dongne_chat/ui/pages/signup/signup_page.dart';
+import 'package:dongne_chat/ui/pages/tap/tap_page.dart';
+import 'package:dongne_chat/ui/widgets/user_vlobal_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -123,11 +126,13 @@ class _HomePageState extends State<LoginPage> {
                               password: pwController.text,
                             );
                             if (loginResult) {
+                              saveUserId(idController.text);
+                              loadUserId();
                               // 로그인 성공 => HomePage로 이동.(모든페이지를 제거한뒤 가야함)
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(builder: (context) {
-                                  return HomePage();
+                                  return TapPage();
                                 }), 
                                 (route) {
                                   return false;
@@ -148,7 +153,19 @@ class _HomePageState extends State<LoginPage> {
                     }),
                   ),
                   SizedBox(height: 70),
-                  Text("회원가입"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "회원가입",
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -158,3 +175,6 @@ class _HomePageState extends State<LoginPage> {
     );
   }
 }
+
+
+
