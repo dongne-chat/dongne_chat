@@ -117,7 +117,6 @@ class _DongneListPageState extends State<DongneListPage> {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigation(),
       floatingActionButton: CreateChatRoomButton(),
     );
   }
