@@ -62,6 +62,13 @@ class _SignupPageState extends State<SignupPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF466995),
+          title: const Text(
+            "Dongne_talk",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
         backgroundColor: Colors.white, // 배경색 변경
         body: Center(
           child: Container(
