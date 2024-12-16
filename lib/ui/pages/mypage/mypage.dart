@@ -158,75 +158,118 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).unfocus(); // 화면을 탭하면 키보드 숨기기
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('마이페이지')),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: _pickAndUploadImage,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: profileImageUrl != null ? NetworkImage(profileImageUrl!) : null,
-                  child: profileImageUrl == null
-                      ? const Icon(
-                          Icons.person,
-                          size: 50,
-                        )
-                      : null,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF466995),
+          title: const Text(
+            'Dongne_talk',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: Center(
+          child: Container(
+            height: 500,
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: const Color(0xFF466995),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: _pickAndUploadImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage:
+                        profileImageUrl != null ? NetworkImage(profileImageUrl!) : null,
+                    child: profileImageUrl == null
+                        ? const Icon(Icons.person, size: 50, color: Colors.white)
+                        : null,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _newIdController,
-                decoration: const InputDecoration(labelText: '새로운 아이디 입력'),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF466995),
+                const SizedBox(height: 20),
+                _buildTextField('새로운 아이디 입력', _newIdController),
+                const SizedBox(height: 10),
+                _buildTextField('새로운 비밀번호 입력', _newPasswordController, obscureText: true),
+                const SizedBox(height: 10),
+                _buildTextField('새로운 닉네임 입력', _newNicknameController),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8CA9CD),
+                    ),
+                    onPressed: _updateId,
+                    child: const Text(
+                      '아이디 변경',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-                onPressed: _updateId,
-                child: const Text(
-                  '아이디 변경',
-                  style: TextStyle(color: Colors.white),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8CA9CD),
+                    ),
+                    onPressed: _updatePassword,
+                    child: const Text(
+                      '비밀번호 변경',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _newPasswordController,
-                decoration: const InputDecoration(labelText: '새로운 비밀번호 입력'),
-                obscureText: true,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF466995),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8CA9CD),
+                    ),
+                    onPressed: _updateNickname,
+                    child: const Text(
+                      '닉네임 변경',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-                onPressed: _updatePassword,
-                child: const Text(
-                  '비밀번호 변경',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _newNicknameController,
-                decoration: const InputDecoration(labelText: '새로운 닉네임 입력'),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF466995),
-                ),
-                onPressed: _updateNickname,
-                child: const Text(
-                  '닉네임 변경',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String hint, TextEditingController controller, {bool obscureText = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+      ),
+      height: 40,
+      width: 200,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: hint,
+            hintStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
           ),
         ),
       ),
