@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -11,6 +14,8 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   String? userId;
+  String? profileImageUrl;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -29,6 +34,33 @@ class _MyPageState extends State<MyPage> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _newNicknameController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _pickAndUploadImage() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      File file = File(pickedFile.path);
+      final storageRef = FirebaseStorage.instance.ref().child('profile_images/$userId.jpg');
+
+      await storageRef.putFile(file);
+      final downloadUrl = await storageRef.getDownloadURL();
+
+      await _firestore.collection('users').doc(userId).update({'profileImgUrl': downloadUrl});
+
+      setState(() {
+        profileImageUrl = downloadUrl;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('프로필 이미지가 성공적으로 업데이트되었습니다.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이미지 업로드 중 오류가 발생했습니다: $e')),
+      );
+    }
+  }
 
   void _updateId() async {
     final newId = _newIdController.text.trim();
@@ -135,6 +167,20 @@ class _MyPageState extends State<MyPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              GestureDetector(
+                onTap: _pickAndUploadImage,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: profileImageUrl != null ? NetworkImage(profileImageUrl!) : null,
+                  child: profileImageUrl == null
+                      ? const Icon(
+                          Icons.person,
+                          size: 50,
+                        )
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: _newIdController,
                 decoration: const InputDecoration(labelText: '새로운 아이디 입력'),
