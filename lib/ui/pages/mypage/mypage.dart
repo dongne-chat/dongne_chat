@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPage extends StatefulWidget {
-  final String userId;
+  const MyPage({super.key});
 
-  const MyPage({super.key, required this.userId});
+
 
   @override
   _MyPageState createState() => _MyPageState();
 }
 
 class _MyPageState extends State<MyPage> {
+
+ String? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId'); // 저장된 사용자 ID를 불러옴
+    });
+  }
+
   final TextEditingController _newIdController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -33,12 +50,12 @@ class _MyPageState extends State<MyPage> {
           const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
         );
       } else {
-        final userDoc = await _firestore.collection('users').doc(widget.userId).get();
+        final userDoc = await _firestore.collection('users').doc(userId).get();
         if (userDoc.exists) {
           final userData = userDoc.data();
           userData!['id'] = newId; // id 필드 업데이트
           await _firestore.collection('users').doc(newId).set(userData);
-          await _firestore.collection('users').doc(widget.userId).delete();
+          await _firestore.collection('users').doc(userId).delete();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('아이디가 성공적으로 변경되었습니다.')),
           );
@@ -46,7 +63,7 @@ class _MyPageState extends State<MyPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MyPage(userId: newId),
+                builder: (context) => MyPage(),
               ),
             );
           });
@@ -70,7 +87,7 @@ class _MyPageState extends State<MyPage> {
     }
 
     try {
-      await _firestore.collection('users').doc(widget.userId).update({
+      await _firestore.collection('users').doc(userId).update({
         'password': newPassword,
       });
       ScaffoldMessenger.of(context).showSnackBar(
