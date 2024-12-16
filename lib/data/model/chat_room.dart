@@ -6,7 +6,7 @@ class ChatRoom {
   final String title;
   final String info;
   final String category;
-  final List<int> users;
+  final List<String> users;
   // final String createdUser;
   final DateTime createdAt;
 
@@ -28,7 +28,7 @@ class ChatRoom {
         title: doc['title'] ?? '',
         info: doc['info'] ?? '',
         category: doc['category'] ?? '전체',
-        users: List<int>.from(doc['users']),
+        users: List<String>.from(doc['users']),
         // createdUser: json['created_user'],
         createdAt: (doc['createdAt'] as Timestamp).toDate());
   }
