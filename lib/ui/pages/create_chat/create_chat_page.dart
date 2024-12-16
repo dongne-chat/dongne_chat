@@ -1,19 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dongne_chat/ui/pages/create_chat/create_chat_view_model.dart';
+import 'package:dongne_chat/ui/pages/dongne_list/dongne_list_view_model.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateChatPage extends ConsumerStatefulWidget {
-  const CreateChatPage({super.key});
+  final userId;
+
+  const CreateChatPage({super.key, required this.userId});
 
   @override
   ConsumerState createState() => _CreateChatPageState();
 }
 
 class _CreateChatPageState extends ConsumerState<CreateChatPage> {
-  final loginUserId = '1';
-
   TextEditingController titleController = TextEditingController();
   TextEditingController infoController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
@@ -25,25 +25,6 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
     infoController.dispose();
     categoryController.dispose();
     super.dispose();
-  }
-
-  final _firestore = FirebaseFirestore.instance;
-
-  void createChatRoom() {
-    String title = titleController.text;
-    String info = infoController.text;
-    String category = selectedCategory;
-
-    // TODO 로그인한 유저의 아이디 넣어주기
-    _firestore.collection('chatRooms').add({
-      'title': title,
-      'info': info,
-      'category': category,
-      'users': [loginUserId], //.채팅방에 접속한 user_id 배열에 저장
-      'address': '광주 봉선동', // 현재 좌표로 주소 찾아서 넣어주기
-      // 'createdUser': 12,
-      'createdAt': Timestamp.now() //날짜 추가
-    });
   }
 
   void updateCategory(String category) {
@@ -74,15 +55,24 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
         ),
         centerTitle: true,
         actions: [
-          TextButton(
-              onPressed: () {
-                createChatRoom();
-                Navigator.pop(context);
-              },
-              child: Text(
-                '완료',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ))
+          Consumer(builder: (context, ref, child) {
+            return TextButton(
+                onPressed: () {
+                  String title = titleController.text;
+                  String info = infoController.text;
+                  String category = selectedCategory;
+
+                  final chatRoomVM = ref.read(dongneListViewModel.notifier);
+                  chatRoomVM.handleCreateChatRoom(
+                      title, info, category, widget.userId, addressName);
+
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  '완료',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ));
+          })
         ],
       ),
       body: Padding(
