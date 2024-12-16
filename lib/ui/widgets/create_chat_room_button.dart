@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dongne_chat/ui/pages/create_chat/create_chat_page.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/chat_room_creat_test.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,8 @@ class CreateChatRoomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ChatRoomCreateTest()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CreateChatPage()));
       },
       shape: CircleBorder(),
       backgroundColor: Theme.of(context).highlightColor,
