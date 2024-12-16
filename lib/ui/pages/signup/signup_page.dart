@@ -44,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyPage(userId: id),
+            builder: (context) => MyPage(),
           ),
         );
       }

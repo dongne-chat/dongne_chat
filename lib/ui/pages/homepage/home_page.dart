@@ -1,4 +1,4 @@
-import 'package:dongne_chat/ui/pages/home/widget/home_page_chat_list.dart';
+import 'package:dongne_chat/ui/pages/homepage/widget/home_page_chat_list.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
