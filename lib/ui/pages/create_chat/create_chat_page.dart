@@ -105,7 +105,6 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          //
                           getAddressName();
                         },
                         child: Icon(Icons.gps_fixed),
@@ -117,20 +116,7 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                 ],
               ),
             ),
-            Container(
-              height: 88,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '채팅방 이름',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  TextField(controller: titleController),
-                ],
-              ),
-            ),
-            SizedBox(height: 16),
+            SizedBox(height: 10),
             Container(
               height: 88,
               child: Column(
@@ -150,7 +136,21 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 30),
+            Container(
+              height: 88,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '채팅방 이름',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  TextField(controller: titleController),
+                ],
+              ),
+            ),
+            SizedBox(height: 40),
             Container(
               height: 88,
               child: Column(
