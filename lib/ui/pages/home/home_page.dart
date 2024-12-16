@@ -1,3 +1,4 @@
+import 'package:dongne_chat/ui/pages/home/widget/home_page_chat_list.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -57,127 +58,8 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ListView(
                 children: [
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '채팅방 이름',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '마지막 채팅 내용',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                '오후 8:50',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '채팅방 이름',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '마지막 채팅 내용',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                '오후 8:50',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '채팅방 이름',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '마지막 채팅 내용',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                '오후 8:50',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '채팅방 이름',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '마지막 채팅 내용',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                '오후 8:50',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  homepagechatlist(),
+                  ],
               ),
             ),
           )
@@ -186,3 +68,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+

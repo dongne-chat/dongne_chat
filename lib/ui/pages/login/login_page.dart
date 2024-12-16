@@ -1,5 +1,6 @@
 import 'package:dongne_chat/ui/pages/home/home_page.dart';
 import 'package:dongne_chat/ui/pages/login/login_view_model.dart';
+import 'package:dongne_chat/ui/pages/signup/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -148,7 +149,19 @@ class _HomePageState extends State<LoginPage> {
                     }),
                   ),
                   SizedBox(height: 70),
-                  Text("회원가입"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "회원가입",
+                    ),
+                  ),
                 ],
               ),
             ),
