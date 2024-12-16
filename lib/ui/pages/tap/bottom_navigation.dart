@@ -14,11 +14,9 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
-    // TODO: 페이지 전환 기능 구현 필요
-    return Consumer(
-      builder: (context, ref, child){
-        final currentIndex = ref.watch(homeViewModel);
-        final viewModel = ref.read(homeViewModel.notifier);
+    return Consumer(builder: (context, ref, child) {
+      final currentIndex = ref.watch(homeViewModel);
+      final viewModel = ref.read(homeViewModel.notifier);
       return BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: viewModel.onIndexChanged,
@@ -37,6 +35,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ),
         ],
       );
-  });
+    });
   }
 }

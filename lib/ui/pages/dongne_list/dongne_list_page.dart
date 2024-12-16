@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dongne_chat/core/geolocator_helper.dart';
 import 'package:dongne_chat/data/model/chat_room.dart';
+import 'package:dongne_chat/data/repository/location_repository.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/dongne_list_item.dart';
-import 'package:dongne_chat/ui/pages/tap/bottom_navigation.dart';
 import 'package:dongne_chat/ui/widgets/create_chat_room_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +26,7 @@ class DongneListPage extends StatefulWidget {
 
 class _DongneListPageState extends State<DongneListPage> {
   String selectedCategory = '전체'; // 기본값 '전체'
+  String myLocation = '';
 
   void updateCategory(String category) {
     setState(() {
@@ -32,16 +34,31 @@ class _DongneListPageState extends State<DongneListPage> {
     });
   }
 
+  void getPosition() async {
+    final position = await GeolocatorHelper.getPosition();
+    final name = await LocationRepository()
+        .findByLatLng(position!.latitude, position.longitude);
+
+    setState(() {
+      myLocation = name!.split(' ').last;
+    });
+  }
+
+  @override
+  void initState() {
+    getPosition();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final chatRoomsAsyncValue = ref.watch(allChatRoomsProvider);
     return Scaffold(
       appBar: AppBar(
         leading: null,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '용산동',
+            myLocation,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -51,9 +68,7 @@ class _DongneListPageState extends State<DongneListPage> {
         centerTitle: false,
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO: GPS 갱신 기능 구현 필요
-            },
+            onPressed: getPosition,
             icon: Icon(Icons.gps_fixed),
             padding: EdgeInsets.only(bottom: 4, right: 8),
           )
