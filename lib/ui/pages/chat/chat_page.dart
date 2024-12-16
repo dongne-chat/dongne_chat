@@ -17,7 +17,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final loginUserId = 1; // 로그인한 사용자의 id 임의로 지정
+  final loginUserId = '1'; // 로그인한 사용자의 id 임의로 지정
 
   // roomId 기준으로 message 가져오기
   final chatMessagesProvider =
