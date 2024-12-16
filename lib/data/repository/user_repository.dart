@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   Future<bool> login({
@@ -22,4 +23,15 @@ class UserRepository {
     }
     return false;
   }
+
+Future<void> saveUserId(String userId) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('userId', userId);
+}
+
+Future<String?> loadUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('userId');
+}
+  
 }

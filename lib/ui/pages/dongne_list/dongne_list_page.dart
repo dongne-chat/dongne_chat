@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dongne_chat/data/model/chat_room.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/dongne_list_item.dart';
-import 'package:dongne_chat/ui/widgets/bottom_navigation.dart';
+import 'package:dongne_chat/ui/pages/tap/bottom_navigation.dart';
 import 'package:dongne_chat/ui/widgets/create_chat_room_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

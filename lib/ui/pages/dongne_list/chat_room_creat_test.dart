@@ -11,7 +11,7 @@ class ChatRoomCreateTest extends StatefulWidget {
 class _ChatRoomCreateTestState extends State<ChatRoomCreateTest> {
   @override
   Widget build(BuildContext context) {
-    final loginUserId = 1;
+    final loginUserId = '1';
 
     final titleController = TextEditingController();
     final infoController = TextEditingController();
