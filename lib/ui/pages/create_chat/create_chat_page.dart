@@ -75,7 +75,10 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: createChatRoom,
+              onPressed: () {
+                createChatRoom();
+                Navigator.pop(context);
+              },
               child: Text(
                 '완료',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
