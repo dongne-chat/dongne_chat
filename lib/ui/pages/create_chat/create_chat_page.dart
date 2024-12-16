@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dongne_chat/ui/pages/create_chat/create_chat_view_model.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +12,44 @@ class CreateChatPage extends ConsumerStatefulWidget {
 }
 
 class _CreateChatPageState extends ConsumerState<CreateChatPage> {
-  TextEditingController nameController = TextEditingController();
+  final loginUserId = '1';
+
+  TextEditingController titleController = TextEditingController();
   TextEditingController infoController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  String selectedCategory = '전체'; // 기본값 '전체'
 
   @override
   void dispose() {
-    nameController.dispose();
+    titleController.dispose();
     infoController.dispose();
+    categoryController.dispose();
     super.dispose();
+  }
+
+  final _firestore = FirebaseFirestore.instance;
+
+  void createChatRoom() {
+    String title = titleController.text;
+    String info = infoController.text;
+    String category = selectedCategory;
+
+    // TODO 로그인한 유저의 아이디 넣어주기
+    _firestore.collection('chatRooms').add({
+      'title': title,
+      'info': info,
+      'category': category,
+      'users': [loginUserId], //.채팅방에 접속한 user_id 배열에 저장
+      'address': '광주 봉선동', // 현재 좌표로 주소 찾아서 넣어주기
+      // 'createdUser': 12,
+      'createdAt': Timestamp.now() //날짜 추가
+    });
+  }
+
+  void updateCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
   }
 
   @override
@@ -44,7 +75,7 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: createChatRoom,
               child: Text(
                 '완료',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -92,7 +123,7 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                     '채팅방 이름',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  TextField(controller: nameController),
+                  TextField(controller: titleController),
                 ],
               ),
             ),
@@ -109,7 +140,9 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                   SizedBox(height: 4),
                   Container(
                     height: 40,
-                    child: CategoryList(),
+                    child: CategoryList(
+                      onCategorySelected: updateCategory,
+                    ),
                   )
                 ],
               ),
