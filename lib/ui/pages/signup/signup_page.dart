@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../pages/mypage/mypage.dart';
+import '../../pages/login/login_page.dart';
 import '/data/model/user.dart';
 
 class SignupPage extends StatefulWidget {
@@ -13,15 +13,17 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _signup() async {
     final id = _idController.text;
     final password = _passwordController.text;
+    final nickname = _nicknameController.text;
 
-    if (id.isEmpty || password.isEmpty) {
+    if (id.isEmpty || password.isEmpty || nickname.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('아이디와 비밀번호를 입력하세요.')),
+        const SnackBar(content: Text('아이디, 비밀번호, 닉네임을 입력하세요.')),
       );
       return;
     }
@@ -34,7 +36,7 @@ class _SignupPageState extends State<SignupPage> {
           const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
         );
       } else {
-        final newUser = User(id: id, password: password);
+        final newUser = User(id: id, password: password, nickname: nickname);
         await _firestore.collection('users').doc(id).set(newUser.toMap());
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -44,7 +46,7 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyPage(),
+            builder: (context) => const LoginPage(),
           ),
         );
       }
@@ -77,6 +79,10 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: const InputDecoration(labelText: '비밀번호 입력'),
                 obscureText: true,
               ),
+              TextField(
+                controller: _nicknameController,
+                decoration: const InputDecoration(labelText: '닉네임 입력'),
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -95,4 +101,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
