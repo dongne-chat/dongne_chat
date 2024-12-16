@@ -8,11 +8,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff466995),
-        title: Text("Dongne_talk",
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold
-        ),),
+        title: Text(
+          "Dongne_talk",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Column(
         children: [
@@ -26,9 +25,20 @@ class HomePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Text(
-            "아이디",
-            style: TextStyle(fontSize: 24),
+          Container(
+            width: 125,
+            height: 45,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xff8CA9CD),
+            ),
+            
+            child: Center(
+              child: Text(
+                "아이디",
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

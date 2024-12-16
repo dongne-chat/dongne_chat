@@ -1,4 +1,5 @@
 import 'package:dongne_chat/theme.dart';
+
 import 'package:dongne_chat/ui/pages/chat/chat_page.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/dongne_list_page.dart';
 import 'package:dongne_chat/ui/pages/home/home_page.dart';
@@ -17,11 +18,9 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    ProviderScope(
-      child: MyApp(),
-    ),
-  );
+
+  runApp(ProviderScope(child: MyApp()));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: const SignupPage(),
+      home: const LoginPage(),
     );
   }
 }
