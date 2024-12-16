@@ -62,14 +62,21 @@ class _SignupPageState extends State<SignupPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white, // 배경색 변경
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF466995),
+          title: const Text(
+            "Dongne_talk",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        backgroundColor: Colors.white, 
         body: Center(
           child: Container(
             height: 350,
             width: 250,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFF466995), // 네모 박스 색상 변경
+              color: const Color(0xFF466995), 
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -98,7 +105,7 @@ class _SignupPageState extends State<SignupPage> {
                   height: 40,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8CA9CD), // 회원가입 버튼 색상 변경
+                      backgroundColor: const Color(0xFF8CA9CD), 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
