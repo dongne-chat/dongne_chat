@@ -1,8 +1,11 @@
+import 'package:dongne_chat/core/geolocator_helper.dart';
+import 'package:dongne_chat/ui/pages/create_chat/create_chat_view_model.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/dongne_list_item.dart';
 import 'package:dongne_chat/ui/widgets/bottom_navigation.dart';
 import 'package:dongne_chat/ui/widgets/create_chat_room_button.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DongneListPage extends StatefulWidget {
   @override
@@ -10,8 +13,60 @@ class DongneListPage extends StatefulWidget {
 }
 
 class _DongneListPageState extends State<DongneListPage> {
+  String _location = "위치를 받아오는 중...";
+
+  @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
+
+  Future<void> _getLocation() async {
+    // 위치 권한 요청
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // 위치 서비스가 활성화 되어있는지 확인
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        _location = "위치 서비스가 비활성화되어 있습니다.";
+      });
+      return;
+    }
+
+    // 위치 권한 요청
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _location = "위치 권한이 거부되었습니다.";
+        });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        _location = "위치 권한이 영구적으로 거부되었습니다.";
+      });
+      return;
+    }
+
+    // 위치 정보 가져오기
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      _location = "위도: ${position.latitude}, 경도: ${position.longitude}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(_location);
+
     return Scaffold(
       appBar: AppBar(
         leading: null,
