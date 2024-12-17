@@ -24,6 +24,28 @@ class _HomePageState extends State<LoginPage> {
     super.dispose();
   }
 
+
+  void _showLoginErrorDialog() {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("로그인 실패"),
+        content: Text("아이디와 비밀번호를 확인하세요."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // 다이얼로그 닫기
+            },
+            child: Text("확인"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -140,9 +162,7 @@ class _HomePageState extends State<LoginPage> {
                                 },
                               );
                             } else {
-                              // ignore: avoid_print
-                              print(idController.text);
-                              return;
+                              _showLoginErrorDialog();
                             }
                           }
                         },
