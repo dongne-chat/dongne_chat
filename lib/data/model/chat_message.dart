@@ -17,7 +17,7 @@ class ChatMessage {
     return ChatMessage(
       messageId: id,
       content: json['content'] ?? '',
-      senderId: json['senderId'] ?? '1',
+      senderId: json['senderId'] ?? '',
       createdAt: (json['createdAt'] as Timestamp).toDate(),
     );
   }

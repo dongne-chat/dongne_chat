@@ -7,7 +7,6 @@ class ChatRoom {
   final String info;
   final String category;
   final List<String> users;
-  // final String createdUser;
   final DateTime createdAt;
 
   ChatRoom({
@@ -17,7 +16,6 @@ class ChatRoom {
     required this.info,
     required this.category,
     required this.users,
-    // required this.createdUser,
     required this.createdAt,
   });
 
@@ -29,7 +27,6 @@ class ChatRoom {
         info: doc['info'] ?? '',
         category: doc['category'] ?? '전체',
         users: List<String>.from(doc['users']),
-        // createdUser: json['created_user'],
         createdAt: (doc['createdAt'] as Timestamp).toDate());
   }
 

@@ -84,6 +84,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -92,9 +95,15 @@ class _HomePageState extends State<HomePage> {
               color: Color(0xff466995),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
           Text(
             "참여중인 방",
             style: TextStyle(fontSize: 24),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Expanded(
             child: FutureBuilder<List<DocumentSnapshot>>(
