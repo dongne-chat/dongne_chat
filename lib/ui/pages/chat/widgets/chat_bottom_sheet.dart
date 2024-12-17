@@ -1,44 +1,38 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dongne_chat/data/model/chat_message.dart';
+import 'package:dongne_chat/ui/pages/chat/chat_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatBottomSheet extends StatefulWidget {
+class ChatBottomSheet extends ConsumerStatefulWidget {
   final roomId;
-  const ChatBottomSheet({super.key, required this.roomId});
+  final userId;
+
+  const ChatBottomSheet(
+      {super.key, required this.roomId, required this.userId});
 
   @override
-  State<ChatBottomSheet> createState() => _ChatBottomSheetState();
+  ConsumerState createState() => _ChatBottomSheetState();
 }
 
-class _ChatBottomSheetState extends State<ChatBottomSheet> {
-  final _firestore = FirebaseFirestore.instance;
-  final _controller = TextEditingController();
+class _ChatBottomSheetState extends ConsumerState<ChatBottomSheet> {
+  final _contentController = TextEditingController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    _contentController.dispose();
     super.dispose();
-  }
-
-// 메세지 저장
-  void sendMessage() {
-    String content = _controller.text;
-    _controller.clear();
-
-    _firestore
-        .collection('chatRooms')
-        .doc(widget.roomId)
-        .collection('messages')
-        .add({
-      'content': content,
-      'senderId': '1',
-      'createdAt': Timestamp.now(),
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final chatMessageVM = ref.read(chatViewModel(widget.roomId).notifier);
+
+    void sendMessage() {
+      String content = _contentController.text;
+      _contentController.clear();
+
+      chatMessageVM.handleCreateMessage(widget.roomId, content, widget.userId);
+    }
+
     return Container(
       decoration: BoxDecoration(color: Color(0xFFB8D3F5)),
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -58,7 +52,7 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
                 ),
                 child: SingleChildScrollView(
                   child: TextField(
-                    controller: _controller,
+                    controller: _contentController,
                     decoration: InputDecoration(border: InputBorder.none),
                     keyboardType: TextInputType.multiline, // 다중 줄 입력 지원
                     maxLines: null,

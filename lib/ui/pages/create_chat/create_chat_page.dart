@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dongne_chat/core/validator/create_chat_validator.dart';
 import 'package:dongne_chat/ui/pages/create_chat/create_chat_view_model.dart';
+import 'package:dongne_chat/ui/pages/dongne_list/dongne_list_view_model.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateChatPage extends ConsumerStatefulWidget {
-  const CreateChatPage({super.key});
+  final userId;
+
+  const CreateChatPage({super.key, required this.userId});
 
   @override
   ConsumerState createState() => _CreateChatPageState();
@@ -14,7 +17,6 @@ class CreateChatPage extends ConsumerStatefulWidget {
 
 class _CreateChatPageState extends ConsumerState<CreateChatPage> {
   final loginUserId = '1';
-
   final formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController infoController = TextEditingController();
@@ -82,17 +84,31 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
             ),
             centerTitle: true,
             actions: [
-              TextButton(
-                  onPressed: () {
-                    if (formKey.currentState?.validate() == true) {
-                      createChatRoom();
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text(
-                    '완료',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ))
+              Consumer(builder: (context, ref, child) {
+                return TextButton(
+                    onPressed: () {
+                      if (addressName == '') {
+                        return;
+                      }
+                      if (formKey.currentState?.validate() == true) {
+                        String title = titleController.text;
+                        String info = infoController.text;
+                        String category = selectedCategory;
+
+                        final chatRoomVM =
+                            ref.read(dongneListViewModel.notifier);
+                        chatRoomVM.handleCreateChatRoom(
+                            title, info, category, widget.userId, addressName);
+
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text(
+                      '완료',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ));
+              })
             ],
           ),
           body: Padding(
@@ -101,7 +117,7 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 103,
+                  height: 88,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -126,26 +142,9 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 10),
                 Container(
-                  height: 105,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '채팅방 이름',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      TextFormField(
-                        controller: titleController,
-                        validator: CreateChatValidator.validatorTitle,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16),
-                Container(
-                  height: 103,
+                  height: 88,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -164,9 +163,27 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 30),
                 Container(
-                  height: 103,
+                  height: 105,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '채팅방 이름',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      TextFormField(
+                        controller: titleController,
+                        validator: CreateChatValidator.validatorTitle,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 40),
+                Container(
+                  height: 105,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

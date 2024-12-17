@@ -1,8 +1,7 @@
-import 'package:dongne_chat/ui/pages/homepage/home_page.dart';
 import 'package:dongne_chat/ui/pages/login/login_view_model.dart';
 import 'package:dongne_chat/ui/pages/signup/signup_page.dart';
 import 'package:dongne_chat/ui/pages/tap/tap_page.dart';
-import 'package:dongne_chat/ui/widgets/user_vlobal_view_model.dart';
+import 'package:dongne_chat/ui/widgets/user_global_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,7 +37,8 @@ class _HomePageState extends State<LoginPage> {
             backgroundColor: Color(0xff466995),
             title: Text(
               "Dongne_talk",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
           body: Center(
@@ -60,8 +60,8 @@ class _HomePageState extends State<LoginPage> {
                     height: 40,
                     width: 200,
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       child: TextField(
                         controller: idController,
                         decoration: InputDecoration(
@@ -84,9 +84,10 @@ class _HomePageState extends State<LoginPage> {
                     height: 40,
                     width: 200,
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       child: TextField(
+                        obscureText: true,
                         controller: pwController,
                         decoration: InputDecoration(
                           hintText: "비밀번호를 입력하세요",
@@ -133,7 +134,7 @@ class _HomePageState extends State<LoginPage> {
                                 context,
                                 MaterialPageRoute(builder: (context) {
                                   return TapPage();
-                                }), 
+                                }),
                                 (route) {
                                   return false;
                                 },
@@ -164,6 +165,7 @@ class _HomePageState extends State<LoginPage> {
                     },
                     child: Text(
                       "회원가입",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
@@ -175,6 +177,3 @@ class _HomePageState extends State<LoginPage> {
     );
   }
 }
-
-
-

@@ -1,39 +1,57 @@
 import 'package:flutter/material.dart';
 
 class homepagechatlist extends StatelessWidget {
-  const homepagechatlist({
+  homepagechatlist({
     super.key,
+    required this.roomId,
+    required this.title,
+    required this.category,
+    required this.userCount
   });
+
+  final roomId;
+  final title;
+  final category;
+  final int userCount;
+
+   
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '채팅방 이름',
-              style: TextStyle(fontSize: 24),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '마지막 채팅 내용',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  '오후 8:50',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.black38),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        height: 80,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    category,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    "참여자 수 : $userCount",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
