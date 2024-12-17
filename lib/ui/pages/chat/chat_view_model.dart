@@ -11,9 +11,9 @@ class ChatViewModel
   Map<String, User>? users;
 
   @override
-  List<ChatMessageWithUser> build(String roomId) {
-    fetchUsers(roomId).then((_) {
-      fetchData(roomId);
+  List<ChatMessageWithUser> build(String arg) {
+    fetchUsers(arg).then((_) {
+      fetchData(arg);
     });
     return [];
   }

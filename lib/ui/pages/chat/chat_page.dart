@@ -102,9 +102,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     return Column(
       children: [
         widget.userId != senderId
-            ? senderMessage(senderNickname, senderProfileImgUrl, senderId,
-                content, createdAt)
-            : createdMassage(content, createdAt),
+            ? senderMessage(
+                senderNickname: senderNickname,
+                senderProfileImgUrl: senderProfileImgUrl,
+                senderId: senderId,
+                content: content,
+                createdAt: createdAt)
+            : createdMassage(content: content, createdAt: createdAt),
         SizedBox(
           height: 25,
         )

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 Widget senderMessage(
-    senderNickname, senderProfileImgUrl, senderId, content, createdAt) {
+    {senderNickname, senderProfileImgUrl, senderId, content, createdAt}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -53,15 +53,14 @@ Widget senderMessage(
                   constraints: BoxConstraints(
                     maxWidth: 250, // Container의 최대 너비를 설정
                   ),
-                  // height: 35,
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 8.0),
+                          horizontal: 16.0, vertical: 8.0),
                       child: Text('$content',
                           softWrap: true, overflow: TextOverflow.visible)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5),
+                  padding: const EdgeInsets.only(left: 7),
                   child: Text(
                     DateFormat('HH:mm')
                         .format(DateTime.parse(createdAt.toString())),
