@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget senderMessage(senderId, content, createdAt) {
+Widget senderMessage(
+    {senderNickname, senderProfileImgUrl, senderId, content, createdAt}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: SizedBox.square(
-          dimension: 50,
-          child: Image.network(
-            'https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_1280.jpg',
-            fit: BoxFit.fill,
-          ),
-        ),
-      ),
+      senderProfileImgUrl != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox.square(
+                dimension: 50,
+                child: Image.network(
+                  senderProfileImgUrl,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            )
+          : Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey[300]!,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SizedBox(
+                width: 50,
+                height: 50,
+              )),
       Padding(
         padding: const EdgeInsets.all(7.0),
         child: Column(
@@ -23,7 +39,7 @@ Widget senderMessage(senderId, content, createdAt) {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
               child: Text(
-                '$senderId',
+                '$senderNickname',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -37,15 +53,14 @@ Widget senderMessage(senderId, content, createdAt) {
                   constraints: BoxConstraints(
                     maxWidth: 250, // Container의 최대 너비를 설정
                   ),
-                  // height: 35,
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 8.0),
+                          horizontal: 16.0, vertical: 8.0),
                       child: Text('$content',
                           softWrap: true, overflow: TextOverflow.visible)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5),
+                  padding: const EdgeInsets.only(left: 7),
                   child: Text(
                     DateFormat('HH:mm')
                         .format(DateTime.parse(createdAt.toString())),

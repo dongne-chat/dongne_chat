@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget createdMassage(content, createdAt) {
+Widget createdMassage({content, createdAt}) {
   return Column(
     children: [
       Row(
@@ -22,7 +22,6 @@ Widget createdMassage(content, createdAt) {
             constraints: BoxConstraints(
               maxWidth: 250, // Container의 최대 너비를 설정
             ),
-            // height: 35,
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
