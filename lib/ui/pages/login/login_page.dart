@@ -87,6 +87,7 @@ class _HomePageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       child: TextField(
+                        obscureText: true,
                         controller: pwController,
                         decoration: InputDecoration(
                           hintText: "비밀번호를 입력하세요",
