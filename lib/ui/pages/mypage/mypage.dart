@@ -30,7 +30,6 @@ class _MyPageState extends State<MyPage> {
     });
   }
 
-  final TextEditingController _newIdController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _newNicknameController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -58,50 +57,6 @@ class _MyPageState extends State<MyPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('이미지 업로드 중 오류가 발생했습니다: $e')),
-      );
-    }
-  }
-
-  void _updateId() async {
-    final newId = _newIdController.text.trim();
-
-    if (newId.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('새로운 아이디를 입력하세요.')),
-      );
-      return;
-    }
-
-    try {
-      final newUserDoc = await _firestore.collection('users').doc(newId).get();
-
-      if (newUserDoc.exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('이미 존재하는 아이디입니다.')),
-        );
-      } else {
-        final userDoc = await _firestore.collection('users').doc(userId).get();
-        if (userDoc.exists) {
-          final userData = userDoc.data();
-          userData!['id'] = newId; // id 필드 업데이트
-          await _firestore.collection('users').doc(newId).set(userData);
-          await _firestore.collection('users').doc(userId).delete();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('아이디가 성공적으로 변경되었습니다.')),
-          );
-          setState(() {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyPage(),
-              ),
-            );
-          });
-        }
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('아이디 변경 중 오류가 발생했습니다: $e')),
       );
     }
   }
@@ -191,27 +146,10 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _buildTextField('새로운 아이디 입력', _newIdController),
-                const SizedBox(height: 10),
                 _buildTextField('새로운 비밀번호 입력', _newPasswordController, obscureText: true),
                 const SizedBox(height: 10),
                 _buildTextField('새로운 닉네임 입력', _newNicknameController),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: 200,
-                  height: 40,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8CA9CD),
-                    ),
-                    onPressed: _updateId,
-                    child: const Text(
-                      '아이디 변경',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
                 SizedBox(
                   width: 200,
                   height: 40,
@@ -276,3 +214,4 @@ class _MyPageState extends State<MyPage> {
     );
   }
 }
+
