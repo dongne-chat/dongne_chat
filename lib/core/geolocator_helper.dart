@@ -10,8 +10,7 @@ class GeolocatorHelper {
       permission = await Geolocator.requestPermission();
 
       // 권한 요청 후 결과가 거부일 때 리턴하기
-      LocationPermission permission2 = await Geolocator.checkPermission();
-      permission2 = await Geolocator.requestPermission();
+      LocationPermission permission2 = await Geolocator.requestPermission();
       if (permission2 == LocationPermission.denied ||
           permission2 == LocationPermission.deniedForever) {
         return null;

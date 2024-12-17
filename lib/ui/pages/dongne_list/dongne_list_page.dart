@@ -1,6 +1,9 @@
-import 'package:dongne_chat/ui/pages/dongne_list/dongne_list_view_model.dart';
+import 'package:dongne_chat/core/geolocator_helper.dart';
+import 'package:dongne_chat/data/repository/location_repository.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/category_list.dart';
 import 'package:dongne_chat/ui/pages/dongne_list/widgets/dongne_list_item.dart';
+import 'package:dongne_chat/ui/pages/dongne_list/widgets/dongne_list_view_model.dart';
+import 'package:dongne_chat/ui/pages/dongne_list/dongne_list_view_model.dart';
 import 'package:dongne_chat/ui/widgets/create_chat_room_button.dart';
 import 'package:dongne_chat/ui/widgets/user_global_view_model.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +21,7 @@ class _DongneListPageState extends State<DongneListPage> {
   void initState() {
     super.initState();
     _loadUserId();
+    getPosition();
   }
 
   Future<void> _loadUserId() async {
@@ -28,10 +32,21 @@ class _DongneListPageState extends State<DongneListPage> {
   }
 
   String selectedCategory = '전체'; // 기본값 '전체'
+  String myLocation = '';
 
   void updateCategory(String category) {
     setState(() {
       selectedCategory = category;
+    });
+  }
+
+  void getPosition() async {
+    final position = await GeolocatorHelper.getPosition();
+    final name = await LocationRepository()
+        .findByLatLng(position!.latitude, position.longitude);
+
+    setState(() {
+      myLocation = name!.split(' ').last;
     });
   }
 
@@ -43,7 +58,7 @@ class _DongneListPageState extends State<DongneListPage> {
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '용산동',
+            myLocation,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -53,9 +68,7 @@ class _DongneListPageState extends State<DongneListPage> {
         centerTitle: false,
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO: GPS 갱신 기능 구현 필요
-            },
+            onPressed: getPosition,
             icon: Icon(Icons.gps_fixed),
             padding: EdgeInsets.only(bottom: 4, right: 8),
           )
@@ -72,14 +85,12 @@ class _DongneListPageState extends State<DongneListPage> {
               child: Text('모임을 만들어볼까요?'),
             );
           }
-
           // 선택된 카테고리에 맞는 채팅방 필터링
           final filteredChatRooms = selectedCategory == '전체'
               ? chatRooms
               : chatRooms
                   .where((room) => room.category == selectedCategory)
                   .toList();
-
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -91,23 +102,25 @@ class _DongneListPageState extends State<DongneListPage> {
                     margin: EdgeInsets.only(bottom: 20),
                     child: CategoryList(onCategorySelected: updateCategory),
                   ),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: filteredChatRooms.length,
-                      itemBuilder: (context, index) {
-                        final chatRoom = filteredChatRooms[index];
-                        return DongneListItem(
-                            roomId: chatRoom.roomId,
-                            title: chatRoom.title,
-                            info: chatRoom.info,
-                            category: chatRoom.category,
-                            createdAt: chatRoom.createdAt,
-                            userId: userId);
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(height: 10),
-                    ),
-                  ),
+                  chatRooms == null || chatRooms.isEmpty
+                      ? Expanded(child: Center(child: Text('모임을 만들어볼까요?')))
+                      : Expanded(
+                          child: ListView.separated(
+                            itemCount: filteredChatRooms.length,
+                            itemBuilder: (context, index) {
+                              final chatRoom = filteredChatRooms[index];
+                              return DongneListItem(
+                                  roomId: chatRoom.roomId,
+                                  title: chatRoom.title,
+                                  info: chatRoom.info,
+                                  category: chatRoom.category,
+                                  createdAt: chatRoom.createdAt,
+                                  userId: userId);
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 10),
+                          ),
+                        ),
                 ],
               ),
             ),
