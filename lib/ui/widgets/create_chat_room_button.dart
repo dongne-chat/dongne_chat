@@ -11,6 +11,7 @@ class CreateChatRoomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: null,
       onPressed: () {
         Navigator.push(
             context,

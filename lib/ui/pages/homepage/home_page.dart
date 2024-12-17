@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dongne_chat/ui/pages/chat/chat_page.dart';
 import 'package:dongne_chat/ui/pages/homepage/widget/home_page_chat_list.dart';
 import 'package:dongne_chat/ui/widgets/create_chat_room_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? userId;
-  Future<List<DocumentSnapshot>>? chatRoomsFuture;
+  String? profileImageUrl;
 
   @override
   void initState() {
@@ -27,24 +28,30 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       userId = prefs.getString('userId');
     });
+
     if (userId != null) {
-      setState(() {
-        chatRoomsFuture = _fetchChatRooms(userId!);
-      });
-    }
+    _loadProfileImage(userId!); // 프로필 이미지 로드
+  }
   }
 
-  Future<List<DocumentSnapshot>> _fetchChatRooms(String userId) async {
+  Stream<QuerySnapshot> _chatRoomsStream(String userId) {
+    return FirebaseFirestore.instance
+        .collection('chatRooms')
+        .where('users', arrayContains: userId)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+  Future<void> _loadProfileImage(String userId) async {
     try {
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('chatRooms')
-          .where('users',
-              arrayContains: userId) // 'users' 필드에 userId가 포함된 문서 검색
-          .get();
-      return querySnapshot.docs;
+      final imageUrl = await FirebaseStorage.instance
+          .ref()
+          .child('profile_images/$userId.jpg')
+          .getDownloadURL();
+      setState(() {
+        profileImageUrl = imageUrl;
+      });
     } catch (e) {
-      print("Firestore 쿼리 실패: $e");
-      return [];
+      print("이미지 로드 실패: $e");
     }
   }
 
@@ -67,7 +74,22 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
               color: Colors.grey,
+              image: profileImageUrl != null
+                  ? DecorationImage(
+                      image: NetworkImage(profileImageUrl!),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
+            child: profileImageUrl == null
+                ? Center(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  )
+                : null,
           ),
           SizedBox(height: 20),
           Container(
@@ -97,46 +119,49 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 24),
           ),
           Expanded(
-            child: FutureBuilder<List<DocumentSnapshot>>(
-              future: chatRoomsFuture,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text("참여중인 채팅방이 없습니다."));
-                } else {
-                  final chatRooms = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: chatRooms.length,
-                    itemBuilder: (context, index) {
-                      final chatRoom = chatRooms[index];
-                      final chatRoomName = chatRoom['title'] ?? '채팅방 이름 없음';
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatPage(
+            child: userId == null
+                ? Center(child: CircularProgressIndicator())
+                : StreamBuilder<QuerySnapshot>(
+                    stream: _chatRoomsStream(userId!),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Center(child: Text("참여중인 채팅방이 없습니다."));
+                      } else {
+                        final chatRooms = snapshot.data!.docs;
+                        return ListView.builder(
+                          itemCount: chatRooms.length,
+                          itemBuilder: (context, index) {
+                            final chatRoom = chatRooms[index];
+                            final chatRoomName = chatRoom['title'] ?? '채팅방 이름 없음';
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                      roomId: chatRoom.id,
+                                      title: chatRoomName,
+                                      userId: userId!,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: homepagechatlist(
                                 roomId: chatRoom.id,
                                 title: chatRoomName,
-                                userId: userId!,
+                                category: chatRoom["category"],
+                                userCount: chatRoom['users'].length,
                               ),
-                            ),
-                          );
-                        },
-                        child: homepagechatlist(
-                          roomId: chatRoom.id,
-                          title: chatRoomName,
-                          category: chatRoom["category"],
-                          userCount: chatRoom['users'].length,
-                        ),
-                      );
+                            );
+                          },
+                        );
+                      }
                     },
-                  );
-                }
-              },
-            ),
+                  ),
           )
         ],
       ),
+      floatingActionButton: CreateChatRoomButton(userId: userId),
     );
   }
 }
