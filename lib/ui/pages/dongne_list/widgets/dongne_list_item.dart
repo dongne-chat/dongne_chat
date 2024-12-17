@@ -8,6 +8,7 @@ class DongneListItem extends StatelessWidget {
   final info;
   final category;
   final createdAt;
+  final userId;
 
   /// 채팅방 리스트
   // const DongneListItem({super.key});
@@ -18,6 +19,7 @@ class DongneListItem extends StatelessWidget {
     required this.info,
     required this.category,
     required this.createdAt,
+    required this.userId,
   });
 
   @override
@@ -27,7 +29,7 @@ class DongneListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        showModalBottom(context, roomId, title, info, category);
+        showModalBottom(context, roomId, title, info, category, userId);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -60,11 +62,6 @@ class DongneListItem extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  // Container(
-                  //   alignment: Alignment.centerRight,
-                  //   child: Text(DateFormat('yy-MM-dd').format(parsedDate),
-                  //       style: TextStyle(fontSize: 13)),
-                  // ),
                 ],
               )
             ],
