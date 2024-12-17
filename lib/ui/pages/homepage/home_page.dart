@@ -48,8 +48,9 @@ class _HomePageState extends State<HomePage> {
           .child('profile_images/$userId.jpg')
           .getDownloadURL();
       setState(() {
-        profileImageUrl = imageUrl;
-      });
+      profileImageUrl = '$imageUrl?timestamp=${DateTime.now().millisecondsSinceEpoch}';
+    });
+      print(profileImageUrl);
     } catch (e) {
       print("이미지 로드 실패: $e");
     }
