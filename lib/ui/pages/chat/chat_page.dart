@@ -17,9 +17,6 @@ class ChatPage extends ConsumerStatefulWidget {
 }
 
 class _ChatPageState extends ConsumerState<ChatPage> {
-  String? nickname;
-  String? profile;
-
   @override
   void initState() {
     super.initState();
