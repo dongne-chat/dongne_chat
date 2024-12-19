@@ -1,10 +1,12 @@
 # 🚀 우주로 가는 5조
 - 프로젝트 명 : 동네챗
 - 프로젝트 목적 : 동네 소모임 찾기
+<br/>
 
 
 ## 📅 프로젝트 기간
 - 2024.12.11 ~ 2024.12.18
+<br/>
 
 
 ## ❓About Team
@@ -12,7 +14,19 @@
 - 신혜원(에이스) : 채팅
 - 김고은(팀원) : 채팅 리스트
 - 김서후(팀원) : 마이페이지, 회원가입
+<br/>
 
+## 🔧 사용 라이브러리 
+- flutter_dotenv
+- firebase_core
+- firebase_storage
+- cloud_firestore
+- flutter_riverpod
+- image_picker
+- shared_preferences
+- geolocator
+- intl
+- dio
 
 ## 💡 주요 기능
 - 로그인
@@ -20,29 +34,25 @@
 - 회원가입
     - ID, 비밀번호, 닉네임 Validation 후 모든 항목 입력 시 회원가입
 - 홈 페이지
-    - 나의 이미지 표시
-    - 나의 아이디 표시
+    - 나의 이미지 및 아이디 표시
     - 내가 참여중인 채팅방 리스트 출력
 - 채팅 리스트
     - GPS로 내가 속한 동네의 채팅 리스트 출력
     - Category로 채팅 리스트를 필터링
     - FloatingActionButton으로 채팅 생성
-    - 채팅 입장 전 BottomModalSheet으로 채팅 정보 확인
+    - 채팅 입장 전 BottomModalSheet으로 채팅방 정보 확인
 - 채팅 생성
     - GPS로 내가 속한 동네 표시
-    - 카테고리 선택
+    - 카테고리 선택하여 생성 가능 
     - 채팅방 이름 및 설명 Validation
-- 채팅
+- 채팅방
     - firebase의 스냅샷으로 실시간 채팅 구현
-    - n명 실시간 채팅이 가능
-    - 사용자의 이미지와 아이디 표시
-    - 받은 메시지는 좌측, 보낸 메시지는 우측에 정렬
+    - n명 실시간 채팅 가능
+    - 참여자의 프로필 이미지와 아이디 표시
     - 시간은 'HH:mm' 형식으로 포맷팅 하여 출력
 - 마이 페이지
     - 사용자 정보 변경 페이지, 기존에 존재하는 정보를 Validatoin 후 변경
-    - 이미지 변경
-    - 비밀번호 변경
-    - 닉네임 변경
+    - 프로필 이미지 / 비밀번호 / 닉네임 변경 가능 
 
 ## 🗄️ Firebase Firestore 구조
 
@@ -78,7 +88,7 @@ Firestore
 - `refactor` : 코드 수정
 - `docs` : 문서 수정
 - `test` : 테스트 코드
-
+<br/>
 
 ## 🛠️ 기술 스택 및 툴
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)
