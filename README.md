@@ -26,7 +26,6 @@
 - intl
 - dio
 <br/>
-<br/>
 
 ## 💡 주요 기능
 - 로그인
@@ -56,6 +55,7 @@
 
 ## 🗄️ Firebase Firestore 구조
 <br/>
+
 
 <pre>
 Firestore
