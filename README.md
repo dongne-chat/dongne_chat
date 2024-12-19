@@ -7,11 +7,22 @@
 - 2024.12.11 ~ 2024.12.18
 <br/>
 
-## ❓About Team
+## ❓ About Team
 - 차부곤(팀장) : 로그인, 홈페이지
 - 신혜원(에이스) : 채팅
 - 김고은(팀원) : 채팅 리스트
 - 김서후(팀원) : 마이페이지, 회원가입
+<br/>
+
+## 🛠️ 기술 스택 및 툴
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)
+<br/>
 <br/>
 
 ## 🔧 사용 라이브러리 
@@ -51,12 +62,10 @@
     - 시간은 'HH:mm' 형식으로 포맷팅 하여 출력
 - 마이 페이지
     - 사용자 정보 변경 페이지, 기존에 존재하는 정보를 Validatoin 후 변경
-    - 프로필 이미지 / 비밀번호 / 닉네임 변경 가능 
-
-## 🗄️ Firebase Firestore 구조
+    - 프로필 이미지 / 비밀번호 / 닉네임 변경 가능
 <br/>
 
-
+## 🗄️ Firebase Firestore 구조
 <pre>
 Firestore
 |
@@ -80,7 +89,7 @@ Firestore
           |-- nickname: String
           |-- password: String
 </pre>
-
+<br/>
 
 ## 📋 커밋 컨벤션
 - `add` : 새로운 파일 및 폴더 추가
@@ -91,11 +100,3 @@ Firestore
 - `test` : 테스트 코드
 <br/>
 
-## 🛠️ 기술 스택 및 툴
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)
-![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)
-![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)
