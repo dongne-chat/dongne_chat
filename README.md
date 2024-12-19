@@ -47,9 +47,9 @@
     - 나의 이미지 및 아이디 표시
     - 내가 참여중인 채팅방 리스트 출력
 - 채팅 리스트
-    - GPS로 내가 속한 동네의 채팅 리스트 출력
-    - Category로 채팅 리스트를 필터링
-    - FloatingActionButton으로 채팅 생성
+    - GPS로 현재 위치의 좌표 찾아서 내가 속한 동네의 채팅 리스트 출력
+    - Category로 채팅 리스트 필터링
+    - FloatingActionButton 사용하여 채팅방 생성 페이지로 이동
     - 채팅 입장 전 BottomModalSheet으로 채팅방 정보 확인
 - 채팅 생성
     - GPS로 내가 속한 동네 표시
