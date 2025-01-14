@@ -100,3 +100,17 @@ Firestore
 - `test` : 테스트 코드
 <br/>
 
+## 👀 설치 및 실행
+### 1. Flutter 설치
+Flutter가 설치되어 있어야 해당 프로젝트를 실행할 수 있습니다. [Flutter 설치 가이드](https://docs.flutter.dev/get-started/install)를 참고하세요.
+
+- 프로젝트 clone
+```
+git clone https://github.com/dongne-chat/dongne_chat.git
+```
+- 의존성 설치
+```
+flutter pub get
+```
+
+
